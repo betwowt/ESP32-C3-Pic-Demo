@@ -1,3 +1,10 @@
-# panda-esp32
+# ESP32 IDF TFT 1.65/1.69/2.79 LVGL
 
-panda设备软件部分
+
+ESP32 IDF LVGL 工程
+
+屏幕适配
+
+TFT 1.65/1.69/2.79
+Driver IC NV3007
+分辨率 142x428
