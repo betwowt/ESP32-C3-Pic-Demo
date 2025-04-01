@@ -7,10 +7,10 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/semphr.h"
-#include "lv_demos.h"
+#include "main_ui.h"
 
 #define MY_DISP_HOR_RES  142
-#define MY_DISP_VER_RES 428
+#define MY_DISP_VER_RES  428
 
 static void increase_lvgl_tick(void *arg);
 static void disp_init(void);
@@ -41,7 +41,19 @@ void lvgl_demo(void)
     ESP_ERROR_CHECK(esp_timer_start_periodic(lvgl_tick_timer, 1 * 1000));
 
     // 创建lvgl任务
-    xTaskCreate(lvgl_task, "lvgl_task", 1024*10, NULL, 1, &lvgl_task_handle);
+    //xTaskCreate(lvgl_task, "lvgl_task", 1024*20, NULL, 1, &lvgl_task_handle);
+    main_ui_create();
+    // lv_obj_t  *current_img = lv_image_create(lv_screen_active());
+    // lv_image_set_src(current_img, "A:storage/image_1_400_300.bin");
+    // lv_obj_align(current_img, LV_ALIGN_CENTER, 0, 0);
+    while (1) {
+        vTaskDelay(pdMS_TO_TICKS(10));
+        lv_timer_handler(); 
+        // if(xSemaphoreTake(gui_MuxSem_Handle, portMAX_DELAY) == pdPASS){
+        //     lv_timer_handler();             /* LVGL计时器 */
+        //     xSemaphoreGive(gui_MuxSem_Handle);
+        // }
+    }
 }
 
 void lv_port_disp_init(void)
@@ -60,17 +72,17 @@ void lv_port_disp_init(void)
     /* Example 1
      * One buffer for partial rendering*/
     // LV_ATTRIBUTE_MEM_ALIGN
-    // static uint8_t buf_1_1[MY_DISP_HOR_RES * 10 * BYTE_PER_PIXEL];            /*A buffer for 10 rows*/
+    // static uint8_t buf_1_1[MY_DISP_HOR_RES * 100 * BYTE_PER_PIXEL];            /*A buffer for 10 rows*/
     // lv_display_set_buffers(disp, buf_1_1, NULL, sizeof(buf_1_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
 
     /* Example 2
      * Two buffers for partial rendering
      * In flush_cb DMA or similar hardware should be used to update the display in the background.*/
     // LV_ATTRIBUTE_MEM_ALIGN
-    static uint8_t buf_2_1[MY_DISP_HOR_RES * 10 * BYTE_PER_PIXEL];
+    static uint8_t buf_2_1[MY_DISP_HOR_RES * 100 * BYTE_PER_PIXEL];
 
     // LV_ATTRIBUTE_MEM_ALIGN
-    static uint8_t buf_2_2[MY_DISP_HOR_RES * 10 * BYTE_PER_PIXEL];
+    static uint8_t buf_2_2[MY_DISP_HOR_RES * 100 * BYTE_PER_PIXEL];
     lv_display_set_buffers(disp, buf_2_1, buf_2_2, sizeof(buf_2_1), LV_DISPLAY_RENDER_MODE_PARTIAL);
 
     /* Example 3
@@ -88,11 +100,10 @@ void lv_port_disp_init(void)
 // lvgl任务
 void lvgl_task(void *pvParameter) {
     ESP_LOGI(TAG, "lvgl_task");
-    
-    // lv_obj_t *label = lv_label_create(lv_screen_active());
-    // lv_label_set_text(label,"hello world");
-    // lv_obj_align(label,LV_ALIGN_CENTER, 0, 0);
-    lv_demo_widgets();
+    main_ui_create();
+    // lv_obj_t  *current_img = lv_image_create(lv_screen_active());
+    // lv_image_set_src(current_img, "A:storage/image_1_400_300.bin");
+    // lv_obj_align(current_img, LV_ALIGN_CENTER, 0, 0);
     while (1) {
         vTaskDelay(pdMS_TO_TICKS(10));
         lv_timer_handler(); 

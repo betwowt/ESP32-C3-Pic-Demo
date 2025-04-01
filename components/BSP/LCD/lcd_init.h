@@ -16,12 +16,12 @@
 #endif
 
 
-/* ???????? */
+
 #define LCD_RES_GPIO_PIN GPIO_NUM_12
 #define LCD_DC_GPIO_PIN GPIO_NUM_13
 #define LCD_BLK_GPIO_PIN GPIO_NUM_21
 
-/* ?????????? */
+
 #define LCD_RES_Set() gpio_set_level(LCD_RES_GPIO_PIN, 1)
 #define LCD_RES_Clr() gpio_set_level(LCD_RES_GPIO_PIN, 0)
 
