@@ -1,7 +1,7 @@
 # ESP32 C3 Picture Carousel Demo
 This is a picture carousel demo using ESP32-C3 microcontroller and 1.68-inch TFT display.
 
-[中文](./README_ZH.md)
+[中文](README_ZH.md)
 
 ### Features
 * Supports four transition effects:
